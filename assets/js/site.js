@@ -21,20 +21,27 @@ function ProductRecived(ProductData) {
      MyProduct.push(ProductData.products[4],ProductData.products[5],ProductData.products[9]);
      
 
- const Price = MyProduct[0].price;
-console.log(Price);
 
-const Title = MyProduct[0].title;
-console.log(Title);
+  const Price = MyProduct[0].price;
+ console.log(Price);
 
-const Desctip = MyProduct[0].description;
-console.log(Desctip);
+ const Title = MyProduct[0].title;
+ console.log(Title);
 
-const Image = MyProduct[0].thumbnail;
-console.log(Image);
+ const Desctip = MyProduct[0].description;
+ console.log(Desctip);
+
+ const Image = MyProduct[0].thumbnail;
+ console.log(Image);
     // let myProducts = ProductData.products
     // console.log(myProducts[8]);
-   const myTitle = document.getElementById('title');
+
+
+
+
+
+
+    const myTitle = document.getElementById('title');
 
    const image = document.createElement('img');
    image.src = MyProduct[0].thumbnail;
@@ -45,17 +52,17 @@ console.log(Image);
       const price = document.createElement('h4');
       price.textContent = MyProduct[0].price;
 
-      const desc = document.createElement('p');
-      desc.textContent = MyProduct[0].description;
 
 
 
       myTitle.appendChild(price);
       myTitle.appendChild(title);
-      myTitle.appendChild(desc);
       myTitle.appendChild(image);
     
+}
+
+
 
  
     
-}
+
