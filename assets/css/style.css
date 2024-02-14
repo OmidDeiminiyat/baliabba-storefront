@@ -1,0 +1,155 @@
+
+
+#ShowProduct {
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(0, 0, 0, 0.059);
+    width: 90%;
+    margin: 5%;
+    
+}
+#ShowProduct figure {
+    border: 1px solid;
+    text-align: center;
+    background-color: rgb(161, 228, 231);
+    box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.75);
+    cursor: pointer;
+
+}
+#ShowProduct figure:hover{
+    box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.35);
+    transition: 2s;
+}
+
+
+#ShowProduct figure h3 #testOne {
+    display: block;
+}
+
+#ShowProduct figure h3 #test, #Nu{
+    visibility: hidden;
+}
+#ShowProduct img {
+    width: 100%;
+    height: 200px;
+}
+/* #ShowProduct h3 span:hover {
+    text-decoration: line-through;
+    color: red;
+} */
+#ShowProduct figure:hover #test {
+   visibility: visible;
+    transition: 1s;
+}
+#ShowProduct figure:hover #Nu {
+   visibility: visible;
+   transition: 1s;
+}
+
+#ShowProduct figure:hover #testOne {
+    text-decoration: line-through;
+    color: red;
+    transition: 1s;
+}
+
+/* Header design */
+
+.header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color:  rgb(161, 228, 231);
+    margin: 0;
+}
+
+.header hgroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.header hgroup h2 {
+    display: block;
+    text-align: right;
+}
+.header ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.header ul li {
+    list-style: none;
+    
+}
+.header ul li a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+/* Navigation design */
+
+nav {
+    background-color:  rgb(120, 214, 219);
+    margin: 0;
+    padding: 1px;
+}
+nav ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+nav ul li {
+    list-style: none;
+    
+}
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    margin-left: 10px;
+}
+ /* Dropdown style */
+ ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  
+  }
+
+  li {
+    float: left;
+  }
+
+  li a, .dropbtn {
+    display: inline-block;
+    
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  li a:hover, .dropdown:hover .dropbtn {
+    background-color:  rgb(120, 214, 219);
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color:  rgb(120, 214, 219);
+    min-width: 160px;
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+  }
+
+  .dropdown-content a:hover {
+    background-color:  rgb(74, 216, 223);
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }

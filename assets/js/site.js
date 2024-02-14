@@ -1,68 +1,61 @@
 
+// globals
+const myFeaturedElement = document.getElementById('ShowProduct');
+console.log(myFeaturedElement);
+let myProducts
+
 GetProductData()
 
-function GetProductData(){
-    fetch('https://dummyjson.com/products')
-    .then((result) => {
-        return result.json();
-    })
-    .then((json) => {
-        ProductRecived(json);
+// model
+function GetProductData() {
+    fetch('https://dummyjson.com/products?limit=100')
+        .then((result) => {
+
+            return result.json();
+        })
+        .then((json) => {
+
+            ProductsRecived(json);
+
+        });
+}
+
+
+// controller
+function ProductsRecived(productData) {
+
+    //console.log(productData)
+
+    myProducts = productData.products
+
+    let myFeaturedProducts = [];
+
+    myFeaturedProducts.push(myProducts[3], myProducts[6], myProducts[8])
+    //console.log(myFeaturedProducts);
+
+    CreateProductView(myFeaturedProducts)
+    //CreateProductView(myProducts)
+}
+
+
+// view code
+function CreateProductView(myCards) {
+    //console.log(myCards);
+
+
+    myCards.forEach(product => {
+        console.log(product);
+
+
+      let myHTML = `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3><span id=testOne>PRIS: ${product.price}</span> <span id="test"> rabat: ${product.discountPercentage}</h3></span> <h2 id="Nu">Nu: ${product.price - product.discountPercentage} </h2></figure>`
+
+
+        myFeaturedElement.innerHTML += myHTML
     });
 }
 
 
 
-function ProductRecived(ProductData) {
-     console.log(ProductData);
-
-     console.log(ProductData.products[4]);
-     let MyProduct = [];
-     MyProduct.push(ProductData.products[4],ProductData.products[5],ProductData.products[9]);
-     
 
 
-  const Price = MyProduct[0].price;
- console.log(Price);
-
- const Title = MyProduct[0].title;
- console.log(Title);
-
- const Desctip = MyProduct[0].description;
- console.log(Desctip);
-
- const Image = MyProduct[0].thumbnail;
- console.log(Image);
-    // let myProducts = ProductData.products
-    // console.log(myProducts[8]);
-
-
-
-
-
-
-    const myTitle = document.getElementById('title');
-
-   const image = document.createElement('img');
-   image.src = MyProduct[0].thumbnail;
-   
-   const title = document.createElement('h2');
-      title.textContent = MyProduct[0].title;
-
-      const price = document.createElement('h4');
-      price.textContent = MyProduct[0].price;
-
-
-
-
-      myTitle.appendChild(price);
-      myTitle.appendChild(title);
-      myTitle.appendChild(image);
-    
-}
-
-
-
- 
-    
 
