@@ -11,7 +11,7 @@
 #ShowProduct figure {
     border: 1px solid;
     text-align: center;
-    background-color: rgb(161, 228, 231);
+    background-color: rgba(124, 196, 235, 0.357);
     box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.75);
     cursor: pointer;
 
@@ -57,8 +57,16 @@
 .header {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    background-color:  rgb(161, 228, 231);
+    /* background-color:  rgba(47, 67, 74, 0.438); */
     margin: 0;
+
+    /* From https://css.glass */
+background: rgba(210, 206, 206, 0.3);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.238);
+backdrop-filter: blur(5.1px);
+-webkit-backdrop-filter: blur(5.1px);
+border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .header hgroup {
@@ -86,31 +94,57 @@
 
 /* Navigation design */
 
-#navigation {
-    background-color:  rgb(120, 214, 219);
-    margin: 0;
-    padding: 1px;
-}
 #navigation{
-    display: flex;
-    flex-direction: row;
+    /* background-color:  rgba(47, 67, 74, 0.227); */
+    background: rgba(210, 206, 206, 0);
+    display: grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+margin: 0;    
+    top: -100px;
+    max-width: 100%;
+    overflow:hidden;
+    
 }
+#navigation nav{
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+#navigation .myDiv{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    color: rgba(81, 48, 15, 0.836);
+    width: 80%;
+    padding: 12px 6px 0 6px;
+    cursor: pointer;
+    
+
+    background-color:  rgb(51, 163, 203);
+}
+
 #navigation nav ul{
-    display: flex;
-    flex-direction: row;
+   
     justify-content: center;
+    text-align: center;
 }
 
 #navigation ul li  {
     text-decoration: none;
-    color: black;
-    margin-left: 10px;
+    text-align: center;
+    color: rgba(81, 48, 15, 0.836);
+    margin: 3px 10px 3px 0;
     list-style: none;
     cursor: pointer;
+    padding: 6px 6px 0 6px;
+    width: 120px;
+    height: 30px;
+    background-color:  rgb(51, 163, 203);
+
 }
 
 #navigation ul li:hover{
-    background-color:  rgb(74, 216, 223);
+    background-color:  rgb(80, 193, 234);
 
 }
  /* Dropdown style */
@@ -161,3 +195,86 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
+
+
+
+  /* single product page */
+.secondImage {
+    max-width: 200px;
+}
+.productDetails h2, h3{
+    color: rgb(124, 52, 52);
+}
+.productDetails div{
+    margin: 30px 20px 0 0;
+}
+
+.secondImage img {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 20px 0 20px 0;
+    border: none;
+    background-color: aliceblue;
+
+}
+.secondImage img:hover{
+    transform: scale(1.2);
+}
+.secondImage img {
+    max-width: 105px;
+    max-height: 105px;
+    cursor: pointer;
+}
+
+.Extra {
+    text-align: center;
+    margin-left: -100px;
+}
+.Extra h1{
+    font-size: 30px;
+    color: rgb(124, 52, 52);
+}
+.Extra h2 {
+    font-size: 20px;
+}
+
+.myButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Button Hover Effect */
+  .myButton:hover {
+    background-color: #45a049;
+  }
+
+  /* Footer start here */
+
+  footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: center;
+    background: rgba(210, 206, 206, 0.3);
+}
+
+  footer section:nth-child(2) ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    
+  }
+  footer section:nth-child(2) ul li a{
+    color: black;
+  }
+
+

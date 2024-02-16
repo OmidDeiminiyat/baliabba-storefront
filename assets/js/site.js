@@ -2,6 +2,7 @@
 // globals
 const productSection = document.getElementById('ShowProduct');
 const navElenent = document.getElementById('navigation');
+const secondaryElements = document.getElementById('secondary');
 
 let myProducts = null
 
@@ -73,7 +74,7 @@ function ProductsRecived(productData) {
 function CreateNavigation(categoryArray) {
     // temporary code
     let myHtml = ""
-    myHtml += `<div onclick="NavigationCallback('all')" >All</div>`
+    myHtml += `<div class="myDiv" onclick="NavigationCallback('all')" >All</div>`
     categoryArray.forEach((category) => {
         myHtml += `<nav> <ul><li onclick="NavigationCallback('${category}')" >${category}</li></ul></nav>`
 
@@ -171,19 +172,45 @@ function buildProduct(product) {
 
     let myHTML = `<figure class="productDetails" onclick="GetProductData()" ><h2>${product.title}</h2>
   
-    <img src="${product.images[0]}">
-    <img src="${product.images[2]}">
-    <img src="${product.images[3]}">
-    <h3>PRIS: ${product.price}</h3>
+    <img src="${product.images[0]}" id="imgLarge">
+    <h3>PRICE: ${product.price}</h3>
     <p>${product.description}</p>
     </figure>
-    `
+    <div class="secondImage">
+    <img src="${product.images[2]}" onclick="changeImage('${product.images[2]}')">
+    <img src="${product.images[3]}" onclick="changeImage('${product.images[3]}')">
+    <img src="${product.images[0]}" onclick="changeImage('${product.images[0]}')">
+    </div>
+    <section class="Extra">
+    <h1>${product.title}</h1>
+    <h2>PRICE: ${product.price}</h2>
+     ${product.discountPercentage} Off 
+    <p>${product.description}</p>
+    <h4>Shipping info:  <a href="#"> click here </a> </h4>
+    <h4>Return Policy: <a href="#"> click here </a> </h4>
+    <button class="myButton" onclick="insertCard()"> Add to Card</button>
 
+  
+    </section>
+    
+    `     
 
-    productSection.innerHTML = myHTML
+    productSection.innerHTML = myHTML 
+   
+  
+    
 }
+
+
+
 
 // view code
 function clearApp() {
     productSection.innerHTML = ""
 }
+
+
+
+function changeImage(newImage) {
+    document.getElementById('imgLarge').src = newImage;
+  }
