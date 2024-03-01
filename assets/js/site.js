@@ -45,6 +45,36 @@ function GetCategoryData() {
 }
 
 
+// This one
+function GetProductsByCategory(myCategoryURL) {
+
+    fetch(myCategoryURL)
+
+        .then((result) => {
+            //console.log(result);
+            return result.json()
+        }
+        )
+
+        .then((json) => {
+
+
+
+            recivedProductsByCategory(json)
+        });
+
+}
+
+
+function recivedProductsByCategory(productsByC) {
+
+    let myProductArray = productsByC.products
+
+    CreateProductView(myProductArray)
+
+}
+
+
 function Categoriesrecived(categoryData) {
     // temporary code
     //console.log(categoryData);
@@ -77,12 +107,16 @@ function CreateNavigation(categoryArray) {
     myHtml += `<div class="myDiv" onclick="NavigationCallback('all')" >All</div>`
     categoryArray.forEach((category) => {
         myHtml += `<nav> <ul><li onclick="NavigationCallback('${category}')" >${category}</li></ul></nav>`
-
+        
     });
 
 
     navElenent.innerHTML = myHtml
 }
+
+
+
+
 
 
 
@@ -109,7 +143,7 @@ function NavigationCallback(myCategory) {
 
 
 
-// view code
+// view code landing page
 function CreateProductView(myCards) {
     //console.log(myCards);
     clearApp()
@@ -124,9 +158,6 @@ function CreateProductView(myCards) {
         productSection.innerHTML += myHTML
     })
 }
-
-
-
 
 
 
@@ -167,7 +198,7 @@ function ProductCallback(myId) {
 
 
 
-//view code
+//view code single page
 function buildProduct(product) {
 
     let myHTML = `<figure class="productDetails" onclick="GetProductData()" ><h2>${product.title}</h2>
@@ -188,7 +219,7 @@ function buildProduct(product) {
     <p>${product.description}</p>
     <h4>Shipping info:  <a href="#"> click here </a> </h4>
     <h4>Return Policy: <a href="#"> click here </a> </h4>
-    <button class="myButton" onclick="insertCard()"> Add to Card</button>
+    <button class="myButton" onclick="insertCard(${product.id})"> Add to Card</button>
 
   
     </section>
@@ -204,13 +235,279 @@ function buildProduct(product) {
 
 
 
+
+// Product call back
+function insertCard(myId) {
+
+
+
+    console.log(myId);
+    let myClickedProduct = null
+
+
+    myProducts.forEach(product => {
+
+        if (product.id == myId) {
+            myClickedProduct = product
+        }
+    }
+    )
+
+    if (myClickedProduct == null) {
+        // ingen produkt
+        alert('no product')
+    }
+    else {
+        // produkt
+        console.log(myClickedProduct)
+        clearApp();
+        buildProduct(myClickedProduct)
+
+    }
+
+}
+
+
 // view code
 function clearApp() {
     productSection.innerHTML = ""
 }
 
 
-
+// change image single page
 function changeImage(newImage) {
     document.getElementById('imgLarge').src = newImage;
   }
+
+
+
+  function cartView() {
+    console.log("Oooooppps");
+  }
+
+
+
+
+
+
+  function SaveBasketData(basketData) {
+    let mySerializedData = JSON.stringify(basketData)
+    localStorage.setItem('myBasket', mySerializedData)
+}
+
+
+function ReadLocalStorageData() {
+
+    let mybasketstring = localStorage.getItem('myBasket')
+    // @ts-ignore
+    let myBasket = JSON.parse(mybasketstring)
+    return myBasket
+}
+
+function InitializeBasket() {
+    //myBasket
+    let myBasket = localStorage.getItem('myBasket')
+
+    if (!myBasket) {
+        console.log('no basket');
+
+        let newBasket = {
+            products: [],
+            total: 0
+        }
+
+
+        UpdateBasketIcon(0)
+
+        /*    let mySerializedData = JSON.stringify(newBasket)
+   
+           localStorage.setItem('myBasket', mySerializedData) */
+
+        SaveBasketData(newBasket)
+
+    } else {
+
+        let myData = JSON.parse(myBasket)
+
+        UpdateBasketIcon(myData.products.length)
+
+    }
+
+}
+
+// ------------- //
+
+function insertCard(productId) {
+
+
+    let myBasket = ReadLocalStorageData()
+
+
+    myBasket.products.push(productId);
+
+    UpdateBasketIcon(myBasket.products.length)
+
+    /*  let mySerializedData = JSON.stringify(myBasket)
+     localStorage.setItem('myBasket', mySerializedData) */
+
+    SaveBasketData(myBasket)
+}
+
+
+
+//----------------//
+
+
+function BasketIconCallback() {
+    /*  let mybasketstring = localStorage.getItem('myBasket')
+     let myBasket = JSON.parse(mybasketstring) */
+    let myBasket = ReadLocalStorageData()
+
+
+    let myProducts = []
+
+    myBasket.products.forEach(productId => {
+        let myProduct = getProduct(productId)
+        if (myProduct) {
+
+            myProducts.push(myProduct)
+        }
+    });
+
+    BuildBasket(myProducts)
+}
+
+
+// ------// 
+function BasketRemove(id) {
+
+
+    /*  let mybasketstring = localStorage.getItem('myBasket')
+     let myBasket = JSON.parse(mybasketstring) */
+    let myBasket = ReadLocalStorageData()
+
+    myBasket.products.forEach((productId, index) => {
+        if (id == productId) {
+            myBasket.products.splice(index, 1)
+            return;
+        }
+    });
+    /* 
+        let mySerializedData = JSON.stringify(myBasket)
+        localStorage.setItem('myBasket', mySerializedData) */
+
+    SaveBasketData(myBasket)
+
+    BasketIconCallback()
+}
+
+
+
+//----------------------------------------------------------------------
+
+
+function paymentCallBack() {
+    alert('weee i am getting paid');
+}
+
+//----------------------------------------------------------------------
+
+function BasketClear() {
+    let newBasket = {
+        products: [],
+        total: 0
+    }
+    UpdateBasketIcon(0)
+    /*   mySerializedData = JSON.stringify(newBasket)
+      localStorage.setItem('myBasket', mySerializedData) */
+
+    SaveBasketData(newBasket)
+
+    BasketIconCallback()
+}
+
+
+//----------------------------------------------------------------------
+
+
+function getProduct(id) {
+    let myProduct = false
+    myProducts.forEach(product => {
+        if (id == product.id) {
+            myProduct = product
+        }
+    });
+
+    return myProduct
+}
+
+function ToggleMenu() {
+    let myMenues = document.getElementById('menuLists')
+    myMenues.classList.toggle('hidden')
+
+}
+
+
+
+/* view code------------------------------------------------------------- */
+
+function BuildBasket(products) {
+    clearApp()
+
+    let myBasketHTML = '<section id="basketWiev">'
+    if (products.length > 0) {
+        products.forEach(product => {
+            // console.log(product);
+
+            let myHTML = `<figure><img src="${product.thumbnail}"><h2>${product.title}</h2><p>PRIS: ${product.price}</p><button onclick="BasketRemove(${product.id})">remove</button></figure>`
+
+
+            myBasketHTML += myHTML
+        })
+        myBasketHTML += `<section id="basketTools"><button onclick="paymentCallBack()">Go to payment</button><button onclick="BasketClear()">clear basket</button></section>`
+    } else {
+        myBasketHTML += `<h1>basket empty go buy stuff</h1><button onclick="GetProductData()">OK</button>`
+
+    }
+
+    myBasketHTML += '</section>'
+
+    productSection.innerHTML = myBasketHTML
+}
+
+
+function UpdateBasketIcon(items) {
+
+    let myUpdateElement = document.getElementById('basketProductText')
+    myUpdateElement.innerHTML = items
+}
+
+function CreateNavBar(Categorydata) {
+
+    navElement.innerHTML = ''
+
+    let navHTML = ' <img id="navIcon" class="hidden" onClick="ToggleMenu()" src="assets/img/burger.svg"><section id="menuLists" class="menuListsLook">'
+
+
+    Categorydata.forEach(superCatData => {
+
+        // ul from category array
+
+        let mySubCats = '<ul>'
+        superCatData.subCategories.forEach(subCatName => {
+            let myListElement = `<li><div class="navRollover"onClick="NavCallback('${subCatName}')">${subCatName}</div></li>`
+            mySubCats += myListElement
+        });
+        mySubCats += '</ul>'
+
+        //console.log(mySubCats);
+        //console.log(superCat.superCategoryname);
+        navHTML += `<div class="navCategories"><h3>${superCatData.superCategoryname}</h3>
+        ${mySubCats}
+        </div>`
+
+    });
+    navHTML += '</section>'
+
+    navElement.innerHTML += navHTML
+}
