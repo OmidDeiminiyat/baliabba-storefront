@@ -3,6 +3,7 @@
 const productSection = document.getElementById('ShowProduct');
 const navElenent = document.getElementById('navigation');
 const secondaryElements = document.getElementById('secondary');
+const basketMe = document.getElementById('basket');
 
 let myProducts = null
 
@@ -237,17 +238,17 @@ function buildProduct(product) {
 
 
 // Product call back
-function insertCard(myId) {
+function insertCard(newId) {
 
 
 
-    console.log(myId);
+    console.log(newId);
     let myClickedProduct = null
 
 
     myProducts.forEach(product => {
 
-        if (product.id == myId) {
+        if (product.id == newId) {
             myClickedProduct = product
         }
     }
@@ -268,6 +269,151 @@ function insertCard(myId) {
 }
 
 
+
+
+//using a onclick function pushing new data to the local storage
+
+function insertCard(myList) {
+        
+    
+        console.log(myList);
+    let myClickedProduct = null
+
+
+    myProducts.forEach(product => {
+
+        if (product.id == myList) {
+            myClickedProduct = product
+
+            console.log(product.title);
+
+
+if (typeof(Storage) !== "undefined") {
+    // Retrieve existing data from local storage
+    var existingData = localStorage.getItem('ShoppingCars');
+
+    // Parse existing data or initialize an empty array if no data exists
+    var dataArray = existingData ? JSON.parse(existingData) : [];
+
+    let myObject = {
+        title: product.title,
+        id: product.id
+    };
+     dataArray.push(myObject);
+
+    localStorage.setItem('ShoppingCars', JSON.stringify(dataArray));
+
+
+
+    console.log("New data has been pushed to local storage.");
+} else {
+    console.log("Local storage is not supported in this browser.");
+}
+
+        }
+    }
+    )    
+
+ }
+
+
+// Count the number of product in the local storage and show with Id front the basket
+var elementCount = 0;
+
+// Iterate through local storage keys and count elements within arrays
+for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    var storedValue = localStorage.getItem(key);
+
+    // Check if the stored value is not null or undefined
+    if (storedValue !== null && storedValue !== undefined) {
+        try {
+            // Parse the stored value as JSON
+            var parsedValue = JSON.parse(storedValue);
+
+            // Check if the parsed value is an array
+            if (Array.isArray(parsedValue)) {
+                // Increment the count by the number of elements in the array
+                elementCount += parsedValue.length;
+            }
+        } catch (error) {
+            // Handle JSON parsing errors if any
+            console.error('Error parsing JSON for key', key, ':', error);
+        }
+    }
+}
+
+ 
+                var paragraph = document.createElement('p');
+                        paragraph.textContent = elementCount;
+
+            basketMe.appendChild(paragraph);
+
+
+
+// ------------------------------ 
+
+function cartView() {
+
+// Retrieve the array from local storage
+var storedArray = localStorage.getItem('ShoppingCars');
+
+// Check if the array exists in local storage
+if (storedArray !== null) {
+
+
+    try {
+        // Parse the array from its string representation
+        var myArray = JSON.parse(storedArray);
+
+        // Now you can access the values in the array
+        console.log('Values in the array:');
+        myArray.forEach(function(value, index) {
+            // console.log('Index', index, ':', value);
+
+            console.log(value.title);
+            console.log(value.id);
+            console.log(index);
+
+
+
+
+    let myHTML = `<figure class="productDetails" onclick="GetProductData()" ><h2>${value.title}</h2>
+    <p>${value.id}</p>
+  
+
+  
+    </section>
+    
+    `     
+
+    productSection.innerHTML = myHTML 
+
+
+
+        });
+
+
+
+    } 
+
+    catch (error) {
+        console.error('Error parsing array:', error);
+    }
+} 
+else {
+    console.log('No array found in local storage.');
+}
+
+}
+
+
+
+
+
+
+
+
 // view code
 function clearApp() {
     productSection.innerHTML = ""
@@ -281,233 +427,8 @@ function changeImage(newImage) {
 
 
 
-  function cartView() {
-    console.log("Oooooppps");
-  }
 
 
 
 
 
-
-  function SaveBasketData(basketData) {
-    let mySerializedData = JSON.stringify(basketData)
-    localStorage.setItem('myBasket', mySerializedData)
-}
-
-
-function ReadLocalStorageData() {
-
-    let mybasketstring = localStorage.getItem('myBasket')
-    // @ts-ignore
-    let myBasket = JSON.parse(mybasketstring)
-    return myBasket
-}
-
-function InitializeBasket() {
-    //myBasket
-    let myBasket = localStorage.getItem('myBasket')
-
-    if (!myBasket) {
-        console.log('no basket');
-
-        let newBasket = {
-            products: [],
-            total: 0
-        }
-
-
-        UpdateBasketIcon(0)
-
-        /*    let mySerializedData = JSON.stringify(newBasket)
-   
-           localStorage.setItem('myBasket', mySerializedData) */
-
-        SaveBasketData(newBasket)
-
-    } else {
-
-        let myData = JSON.parse(myBasket)
-
-        UpdateBasketIcon(myData.products.length)
-
-    }
-
-}
-
-// ------------- //
-
-function insertCard(productId) {
-
-
-    let myBasket = ReadLocalStorageData()
-
-
-    myBasket.products.push(productId);
-
-    UpdateBasketIcon(myBasket.products.length)
-
-    /*  let mySerializedData = JSON.stringify(myBasket)
-     localStorage.setItem('myBasket', mySerializedData) */
-
-    SaveBasketData(myBasket)
-}
-
-
-
-//----------------//
-
-
-function BasketIconCallback() {
-    /*  let mybasketstring = localStorage.getItem('myBasket')
-     let myBasket = JSON.parse(mybasketstring) */
-    let myBasket = ReadLocalStorageData()
-
-
-    let myProducts = []
-
-    myBasket.products.forEach(productId => {
-        let myProduct = getProduct(productId)
-        if (myProduct) {
-
-            myProducts.push(myProduct)
-        }
-    });
-
-    BuildBasket(myProducts)
-}
-
-
-// ------// 
-function BasketRemove(id) {
-
-
-    /*  let mybasketstring = localStorage.getItem('myBasket')
-     let myBasket = JSON.parse(mybasketstring) */
-    let myBasket = ReadLocalStorageData()
-
-    myBasket.products.forEach((productId, index) => {
-        if (id == productId) {
-            myBasket.products.splice(index, 1)
-            return;
-        }
-    });
-    /* 
-        let mySerializedData = JSON.stringify(myBasket)
-        localStorage.setItem('myBasket', mySerializedData) */
-
-    SaveBasketData(myBasket)
-
-    BasketIconCallback()
-}
-
-
-
-//----------------------------------------------------------------------
-
-
-function paymentCallBack() {
-    alert('weee i am getting paid');
-}
-
-//----------------------------------------------------------------------
-
-function BasketClear() {
-    let newBasket = {
-        products: [],
-        total: 0
-    }
-    UpdateBasketIcon(0)
-    /*   mySerializedData = JSON.stringify(newBasket)
-      localStorage.setItem('myBasket', mySerializedData) */
-
-    SaveBasketData(newBasket)
-
-    BasketIconCallback()
-}
-
-
-//----------------------------------------------------------------------
-
-
-function getProduct(id) {
-    let myProduct = false
-    myProducts.forEach(product => {
-        if (id == product.id) {
-            myProduct = product
-        }
-    });
-
-    return myProduct
-}
-
-function ToggleMenu() {
-    let myMenues = document.getElementById('menuLists')
-    myMenues.classList.toggle('hidden')
-
-}
-
-
-
-/* view code------------------------------------------------------------- */
-
-function BuildBasket(products) {
-    clearApp()
-
-    let myBasketHTML = '<section id="basketWiev">'
-    if (products.length > 0) {
-        products.forEach(product => {
-            // console.log(product);
-
-            let myHTML = `<figure><img src="${product.thumbnail}"><h2>${product.title}</h2><p>PRIS: ${product.price}</p><button onclick="BasketRemove(${product.id})">remove</button></figure>`
-
-
-            myBasketHTML += myHTML
-        })
-        myBasketHTML += `<section id="basketTools"><button onclick="paymentCallBack()">Go to payment</button><button onclick="BasketClear()">clear basket</button></section>`
-    } else {
-        myBasketHTML += `<h1>basket empty go buy stuff</h1><button onclick="GetProductData()">OK</button>`
-
-    }
-
-    myBasketHTML += '</section>'
-
-    productSection.innerHTML = myBasketHTML
-}
-
-
-function UpdateBasketIcon(items) {
-
-    let myUpdateElement = document.getElementById('basketProductText')
-    myUpdateElement.innerHTML = items
-}
-
-function CreateNavBar(Categorydata) {
-
-    navElement.innerHTML = ''
-
-    let navHTML = ' <img id="navIcon" class="hidden" onClick="ToggleMenu()" src="assets/img/burger.svg"><section id="menuLists" class="menuListsLook">'
-
-
-    Categorydata.forEach(superCatData => {
-
-        // ul from category array
-
-        let mySubCats = '<ul>'
-        superCatData.subCategories.forEach(subCatName => {
-            let myListElement = `<li><div class="navRollover"onClick="NavCallback('${subCatName}')">${subCatName}</div></li>`
-            mySubCats += myListElement
-        });
-        mySubCats += '</ul>'
-
-        //console.log(mySubCats);
-        //console.log(superCat.superCategoryname);
-        navHTML += `<div class="navCategories"><h3>${superCatData.superCategoryname}</h3>
-        ${mySubCats}
-        </div>`
-
-    });
-    navHTML += '</section>'
-
-    navElement.innerHTML += navHTML
-}
