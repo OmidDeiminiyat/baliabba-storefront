@@ -4,12 +4,14 @@ const productSection = document.getElementById('ShowProduct');
 const navElenent = document.getElementById('navigation');
 const secondaryElements = document.getElementById('secondary');
 const basketMe = document.getElementById('basket');
+const forthElement = document.getElementById('Forth');
 
 let myProducts = null
 
 
 GetProductData()
 GetCategoryData()
+
 
 // model
 function GetProductData() {
@@ -101,8 +103,12 @@ function ProductsRecived(productData) {
 
 
 
-//view code
+// Create navigation bar 
+
+
 function CreateNavigation(categoryArray) {
+
+
     // temporary code
     let myHtml = ""
     myHtml += `<div class="myDiv" onclick="NavigationCallback('all')" >All</div>`
@@ -148,6 +154,7 @@ function NavigationCallback(myCategory) {
 function CreateProductView(myCards) {
     //console.log(myCards);
     clearApp()
+    clearAppMe()
 
     myCards.forEach(product => {
         // console.log(product);
@@ -285,7 +292,7 @@ function insertCard(myList) {
         if (product.id == myList) {
             myClickedProduct = product
 
-            console.log(product.title);
+            console.log(product.price);
 
 
 if (typeof(Storage) !== "undefined") {
@@ -297,12 +304,14 @@ if (typeof(Storage) !== "undefined") {
 
     let myObject = {
         title: product.title,
-        id: product.id
+        id: product.id,
+        price: product.price,
+        thumbnail: product.images[0],
+        description: product.description
     };
      dataArray.push(myObject);
 
     localStorage.setItem('ShoppingCars', JSON.stringify(dataArray));
-
 
 
     console.log("New data has been pushed to local storage.");
@@ -344,10 +353,15 @@ for (var i = 0; i < localStorage.length; i++) {
 }
 
  
-                var paragraph = document.createElement('p');
+                var paragraph = document.createElement('span');
                         paragraph.textContent = elementCount;
 
             basketMe.appendChild(paragraph);
+
+
+
+
+// Call updateSpanContent every 10 seconds
 
 
 
@@ -368,7 +382,8 @@ if (storedArray !== null) {
 
         // Now you can access the values in the array
         console.log('Values in the array:');
-        myArray.forEach(function(value, index) {
+   //     myArray.forEach(function(value, index) {
+         myArray.forEach(function(value, index) {
             // console.log('Index', index, ':', value);
 
             console.log(value.title);
@@ -378,24 +393,27 @@ if (storedArray !== null) {
 
 
 
-    let myHTML = `<figure class="productDetails" onclick="GetProductData()" ><h2>${value.title}</h2>
-    <p>${value.id}</p>
+let myHTML = `<section id="basketProduct" class="basketProduct"><img class="image" src="${value.thumbnail}"> <h2>${value.title}</h2><h3>${value.price}</h3>
+    <p>${value.description}</p> <span onclick="deleteItem(${value.id})"> Delete </span>
   
 
   
     </section>
     
     `     
+    productSection.innerHTML = ""
+    forthElement.innerHTML = myHTML 
 
-    productSection.innerHTML = myHTML 
+    
 
 
 
-        });
+        } );
 
 
 
     } 
+    
 
     catch (error) {
         console.error('Error parsing array:', error);
@@ -414,9 +432,71 @@ else {
 
 
 
+        // Delete product from local storage using id
+function deleteItem(productId) {
+    // Retrieve the array from local storage
+    var productsString = localStorage.getItem('ShoppingCars');
+
+    // Check if the array exists in local storage
+    if (productsString) {
+        // Parse the JSON string into a JavaScript array
+        var products = JSON.parse(productsString);
+
+        // Find the index of the item with the matching product ID
+        var indexToDelete = -1;
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].id === productId) {
+                indexToDelete = i;
+                break;
+            }
+        }
+
+        // Check if the item was found
+        if (indexToDelete !== -1) {
+            // Remove the item from the array
+            products.splice(indexToDelete, 1);
+
+            // Update the local storage with the modified array
+            localStorage.setItem('ShoppingCars', JSON.stringify(products));
+
+            console.log('Product with ID ' + productId + ' deleted successfully.');
+        } else {
+            console.log('Product with ID ' + productId + ' not found in the array.');
+        }
+    } else {
+        console.log('No products found in local storage.');
+
+    }
+}
+
+// Example usage:
+var productIdToDelete = 'productId'; // Replace 'your_product_id' with the actual product ID you want to delete
+deleteItem(productIdToDelete);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // view code
 function clearApp() {
     productSection.innerHTML = ""
+}
+
+
+
+function clearAppMe() {
+    forthElement.innerHTML = ""
 }
 
 
