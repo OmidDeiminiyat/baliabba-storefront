@@ -103,9 +103,137 @@ function ProductsRecived(productData) {
 
 
 
+function Categoriesrecived(CategoryData) {
+    // hoved kategori arrays
+    let myElectronics = []
+    let myCosmetics = []
+    let myVehicles = []
+    let womensFashion = []
+    let mensFashion = []
+    let myMisc = []
+
+    CategoryData.forEach(category => {
+
+        switch (category) {
+
+            case 'laptops':
+            case 'lighting':
+            case 'smartphones':
+
+                myElectronics.push(category)
+                break;
+
+            case 'fragrances':
+            case 'skincare':
+                myCosmetics.push(category)
+
+                break;
+
+            case 'automotive':
+            case 'motorcycle':
+                myVehicles.push(category)
+
+                break;
+
+            case 'tops':
+            case 'womens-dresses':
+            case 'womens-shoes':
+            case 'womens-watches':
+            case 'womens-bags':
+            case 'womens-jewellery':
+
+                womensFashion.push(category)
+
+                break;
+
+            case 'tops':
+            case 'mens-shirts':
+            case 'mens-shoes':
+            case 'mens-watches':
+                mensFashion.push(category)
+
+                break;
+
+            default:
+
+                myMisc.push(category)
+                break;
+        }
+
+    });
+
+    // add all to misc
+    myMisc.push('All')
+       // build datastructure to view code
+       let myNavigationData = [
+        {
+            superCategoryname: 'Electronics',
+            subCategories: myElectronics
+        },
+        {
+            superCategoryname: 'Cosmetics',
+            subCategories: myCosmetics
+        },
+        {
+            superCategoryname: 'Vehicles',
+            subCategories: myVehicles
+        },
+        {
+            superCategoryname: 'mens fashion',
+            subCategories: mensFashion
+        },
+        {
+            superCategoryname: 'womans fashion',
+            subCategories: womensFashion
+        },
+        {
+            superCategoryname: 'misc',
+            subCategories: myMisc
+        }
+    ]
+
+
+
+    CreateNavBar(myNavigationData)
+}
+
+
+function CreateNavBar(Categorydata) {
+
+    navElenent.innerHTML = ''
+
+    let navHTML = ' <section id="menuLists" class="menuListsLook">'
+
+
+    Categorydata.forEach(superCatData => {
+
+        // ul from category array
+
+        let mySubCats = '<ul>'
+        superCatData.subCategories.forEach(subCatName => {
+            let myListElement = `<li><div class="navRollover"onClick="NavigationCallback('${subCatName}')">${subCatName}</div></li>`
+            mySubCats += myListElement
+        });
+        mySubCats += '</ul>'
+
+        //console.log(mySubCats);
+        //console.log(superCat.superCategoryname);
+        navHTML += `<div class="navCategories"><h3>${superCatData.superCategoryname}</h3>
+        ${mySubCats}
+        </div>`
+
+    });
+    navHTML += '</section>'
+
+    navElenent.innerHTML += navHTML
+
+}
+
+
+
 // Create navigation bar 
 
-
+/*
 function CreateNavigation(categoryArray) {
 
 
@@ -121,7 +249,7 @@ function CreateNavigation(categoryArray) {
     navElenent.innerHTML = myHtml
 }
 
-
+*/
 
 
 
@@ -160,7 +288,7 @@ function CreateProductView(myCards) {
         // console.log(product);
 
 
-        let myHTML = `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3><span id=testOne>PRIS: ${product.price}</span> <span id="test"> rabat: ${product.discountPercentage}</h3></span> <h2 id="Nu">Nu: ${product.price - product.discountPercentage} </h2></figure>`
+    let myHTML = `<figure onclick="ProductCallback(${product.id})" ><h2>${product.title}</h2><img src="${product.thumbnail}"><h3><span id=testOne>PRIS: ${product.price}</span> <span id="test"> rabat: ${product.discountPercentage}</h3></span> <h2 id="Nu">Nu: ${product.price - product.discountPercentage} </h2></figure>`
 
 
         productSection.innerHTML += myHTML
@@ -229,7 +357,6 @@ function buildProduct(product) {
     <h4>Return Policy: <a href="#"> click here </a> </h4>
     <button class="myButton" onclick="insertCard(${product.id})"> Add to Card</button>
 
-  
     </section>
     
     `     
@@ -239,9 +366,6 @@ function buildProduct(product) {
   
     
 }
-
-
-
 
 
 // Product call back
@@ -326,8 +450,11 @@ if (typeof(Storage) !== "undefined") {
  }
 
 
+
 // Count the number of product in the local storage and show with Id front the basket
 var elementCount = 0;
+
+
 
 // Iterate through local storage keys and count elements within arrays
 for (var i = 0; i < localStorage.length; i++) {
@@ -352,18 +479,12 @@ for (var i = 0; i < localStorage.length; i++) {
     }
 }
 
+
+    var paragraph = document.createElement('span');
+        paragraph.textContent = elementCount;
+
+        basketMe.appendChild(paragraph);
  
-                var paragraph = document.createElement('span');
-                        paragraph.textContent = elementCount;
-
-            basketMe.appendChild(paragraph);
-
-
-
-
-// Call updateSpanContent every 10 seconds
-
-
 
 // ------------------------------ 
 
@@ -383,6 +504,8 @@ if (storedArray !== null) {
         // Now you can access the values in the array
         console.log('Values in the array:');
    //     myArray.forEach(function(value, index) {
+
+   let test = '<div>'
          myArray.forEach(function(value, index) {
             // console.log('Index', index, ':', value);
 
@@ -390,27 +513,20 @@ if (storedArray !== null) {
             console.log(value.id);
             console.log(index);
 
+           
+        
 
 
-
-let myHTML = `<section id="basketProduct" class="basketProduct"><img class="image" src="${value.thumbnail}"> <h2>${value.title}</h2><h3>${value.price}</h3>
-    <p>${value.description}</p> <span onclick="deleteItem(${value.id})"> Delete </span>
-  
-
-  
-    </section>
-    
-    `     
+    let myHTML = `<section id="basketProduct" class="basketProduct"><img class="image" src="${value.thumbnail}"> <h2>${value.title}</h2><h3>${value.price}</h3>
+    <p>${value.description}</p> <span onclick="deleteItem(${value.id})"> Delete </span></section>
+    `   
+    test += myHTML
+            test += '</div>'
     productSection.innerHTML = ""
     forthElement.innerHTML = myHTML 
 
-    
-
-
 
         } );
-
-
 
     } 
     

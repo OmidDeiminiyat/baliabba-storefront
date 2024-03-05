@@ -102,14 +102,36 @@ border: 1px solid rgba(255, 255, 255, 0.35);
 #navigation{
     /* background-color:  rgba(47, 67, 74, 0.227); */
     background: rgba(210, 206, 206, 0);
-    display: grid;
-   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-margin: 0;    
+   display: flex;
+   flex-direction: row;
+   float: left;
+  
     top: -100px;
-    max-width: 100%;
-    overflow:hidden;
     
 }
+
+  #menuLists{
+   
+    display: flex;
+    flex-direction: row;
+
+ }
+  
+   
+    
+
+#navigation ul{
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: rgba(94, 89, 89, 0.088);
+}
+
+.navCategories h3 {
+    margin: 0 10px 0 10px;
+    cursor: pointer;
+}
+
+
 #navigation nav{
     margin: 0;
     padding: 0;
