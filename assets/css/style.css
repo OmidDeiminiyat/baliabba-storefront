@@ -266,11 +266,13 @@ margin: 0;
   /* Footer start here */
 
   footer {
+    margin: 100px 0 0 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     text-align: center;
     background: rgba(210, 206, 206, 0.3);
+    top: 100%;
 }
 
   footer section:nth-child(2) ul {
@@ -281,5 +283,55 @@ margin: 0;
   footer section:nth-child(2) ul li a{
     color: black;
   }
+
+ /* Basket design */
+
+
+#basketProduct img {
+   width: 200px;
+   float: left;
+   margin-left: 50px;
+}
+.basketProduct h2{
+    display: block;
+    position: relative;
+    color: red;
+    margin-left: 26%;
+}
+.basketProduct p {
+    width: 500px;
+    display: block;
+    position: relative;
+    margin-left: 20%
+}
+.basketProduct h3 {
+    display: block;
+    position: relative;
+    margin-left: 30%;
+}
+.basketProduct span {
+    display: flex;
+    justify-content: end;
+    margin-right: 3%;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
