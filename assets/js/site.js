@@ -3,12 +3,17 @@
 const productSection = document.getElementById('ShowProduct');
 const navElenent = document.getElementById('navigation');
 const secondaryElements = document.getElementById('secondary');
+const basketIcon = document.getElementById('basket')
+
 
 let myProducts = null
 
 
+InitializeBasket()
 GetProductData()
 GetCategoryData()
+
+
 
 // model
 function GetProductData() {
@@ -168,7 +173,7 @@ function ProductCallback(myId) {
 
 
 
-    console.log(myId);
+     console.log(myId);
     let myClickedProduct = null
 
 
@@ -326,14 +331,45 @@ function InitializeBasket() {
         SaveBasketData(newBasket)
 
     } else {
-
+        // console.log('Dooouuudd');
         let myData = JSON.parse(myBasket)
 
         UpdateBasketIcon(myData.products.length)
 
+
     }
 
 }
+
+
+
+
+// ---------- here -------//
+
+function updateItemCount() {
+    // Retrieve data from local storage
+    const dataFromLocalStorage = localStorage.getItem('myBasket');
+
+    // Check if there is any data in local storage
+    if (dataFromLocalStorage) {
+        // Parse the JSON data
+        const parsedData = JSON.parse(dataFromLocalStorage);
+        
+        // Get the number of items
+        const itemCount = Object.keys(parsedData).length;
+        
+        // Update the HTML element with the item count
+        document.getElementById('itemCount').textContent = itemCount;
+    } else {
+        // If there is no data in local storage, set item count to 0
+        document.getElementById('itemCount').textContent = '0';
+    }
+}
+
+// Call the function when the page loads
+updateItemCount();
+
+
 
 // ------------- //
 
