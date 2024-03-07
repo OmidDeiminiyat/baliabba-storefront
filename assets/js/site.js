@@ -5,12 +5,14 @@ const navElenent = document.getElementById('navigation');
 const secondaryElements = document.getElementById('secondary');
 const basketMe = document.getElementById('basket');
 const forthElement = document.getElementById('Forth');
+const showMessage = document.getElementById('alert');
 
 let myProducts = null
 
 
 GetProductData()
 GetCategoryData()
+
 
 
 // model
@@ -400,6 +402,48 @@ function insertCard(newId) {
 }
 
 
+// Count the number of product in the local storage and show with Id front the basket
+
+
+
+
+
+  // Update count display on page load
+
+  var elementCount = 0;
+
+
+  // Iterate through local storage keys and count elements within arrays
+  for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      var storedValue = localStorage.getItem(key);
+  
+      // Check if the stored value is not null or undefined
+      if (storedValue !== null && storedValue !== undefined) {
+          try {
+              // Parse the stored value as JSON
+              var parsedValue = JSON.parse(storedValue);
+  
+              // Check if the parsed value is an array
+              if (Array.isArray(parsedValue)) {
+                  // Increment the count by the number of elements in the array
+                  elementCount = parsedValue.length;
+              }
+          } catch (error) {
+              // Handle JSON parsing errors if any
+              console.error('Error parsing JSON for key', key, ':', error);
+          }
+      }
+  }
+  
+      var paragraph = document.createElement('span');
+      paragraph.textContent = elementCount;
+  
+       basketMe.appendChild(paragraph);
+
+
+
+
 
 
 //using a onclick function pushing new data to the local storage
@@ -439,6 +483,11 @@ if (typeof(Storage) !== "undefined") {
 
 
     console.log("New data has been pushed to local storage.");
+    const dataAdd = document.createElement('h3');
+    dataAdd.textContent = "New data has been pushed to local storage";
+
+    showMessage.appendChild(dataAdd);
+    
 } else {
     console.log("Local storage is not supported in this browser.");
 }
@@ -447,44 +496,16 @@ if (typeof(Storage) !== "undefined") {
     }
     )    
 
+    const newElement = elementCount + 1;
+    paragraph.textContent = newElement;
+
+    basketMe.appendChild(paragraph);
+
  }
 
 
 
-// Count the number of product in the local storage and show with Id front the basket
-var elementCount = 0;
 
-
-
-// Iterate through local storage keys and count elements within arrays
-for (var i = 0; i < localStorage.length; i++) {
-    var key = localStorage.key(i);
-    var storedValue = localStorage.getItem(key);
-
-    // Check if the stored value is not null or undefined
-    if (storedValue !== null && storedValue !== undefined) {
-        try {
-            // Parse the stored value as JSON
-            var parsedValue = JSON.parse(storedValue);
-
-            // Check if the parsed value is an array
-            if (Array.isArray(parsedValue)) {
-                // Increment the count by the number of elements in the array
-                elementCount += parsedValue.length;
-            }
-        } catch (error) {
-            // Handle JSON parsing errors if any
-            console.error('Error parsing JSON for key', key, ':', error);
-        }
-    }
-}
-
-
-    var paragraph = document.createElement('span');
-        paragraph.textContent = elementCount;
-
-        basketMe.appendChild(paragraph);
- 
 
 // ------------------------------ 
 
@@ -567,6 +588,7 @@ function deleteItem(productId) {
             }
         }
 
+
         // Check if the item was found
         if (indexToDelete !== -1) {
             // Remove the item from the array
@@ -574,8 +596,16 @@ function deleteItem(productId) {
 
             // Update the local storage with the modified array
             localStorage.setItem('ShoppingCars', JSON.stringify(products));
-
             console.log('Product with ID ' + productId + ' deleted successfully.');
+
+            //use -1 to encrease numbers of products in basket
+     
+                const thirdElemennt = elementCount - 1;
+                paragraph.textContent = thirdElemennt;
+            
+                basketMe.appendChild(paragraph);
+           
+            
         } else {
             console.log('Product with ID ' + productId + ' not found in the array.');
         }
@@ -583,10 +613,10 @@ function deleteItem(productId) {
         console.log('No products found in local storage.');
 
     }
+
 }
 
-// Example usage:
-var productIdToDelete = 'productId'; // Replace 'your_product_id' with the actual product ID you want to delete
+var productIdToDelete = 'productId'; //I use product ID to delete Item
 deleteItem(productIdToDelete);
 
 
@@ -621,6 +651,10 @@ function changeImage(newImage) {
     document.getElementById('imgLarge').src = newImage;
   }
 
+  function closeBox() {
+    showMessage.style.display="none";
+  }
+  
 
 
 
